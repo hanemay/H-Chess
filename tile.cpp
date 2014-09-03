@@ -15,6 +15,7 @@ void disOrange();
 void Tile::mousePressEvent(QMouseEvent *event)
 {
 
+
     validate(this,++count);
 
 
@@ -29,8 +30,7 @@ void Tile::display(char elem)
     {
         switch(elem)
         {
-                mate->canHitKing();
-    mate->checkIfChess2();
+
             case 'P': this->setPixmap(QPixmap(":/Images/pawn_white.svg"));
                       break;
             case 'R': this->setPixmap(QPixmap(":/Images/rook_white.svg"));
@@ -70,6 +70,7 @@ void Tile::display(char elem)
 
 void validate(Tile *temp, int c)
 {
+
     int retValue,i;
 
     if(c==1)

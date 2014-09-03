@@ -59,8 +59,8 @@ void check_mate::add_to_black(int row, int col, int tiles){
 void check_mate::icolsTest(Tile *temp)
 {
     for(int faketiles = 0; faketiles < 64; faketiles++){
-        colsWhite[temp->row][temp->col][faketiles] = 0;
-        colsBlack[temp->row][temp->col][faketiles] = 0;
+        colsWhite[temp->row][temp->col][faketiles] = NULL;
+        colsBlack[temp->row][temp->col][faketiles] = NULL;
     }
     switch(temp->pieceName)
     {
@@ -86,8 +86,8 @@ void check_mate::icolsTest(Tile *temp)
 }
 void check_mate::canHitKing(){
 //std::cout<<"CAN HIT KING TEST"<<std::endl;
-black_king_in_chess = false;
-white_king_in_chess = false;
+    black_king_in_chess = false;
+    white_king_in_chess = false;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j<8;j++){
               //  std::cout<<tile[i][j]->tileNum<<" "<<tile[i][j]->pieceName<<" ";
@@ -558,16 +558,16 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(r-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -579,16 +579,16 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(r++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             exp[max++]=tile[r][c]->tileNum;
@@ -601,16 +601,16 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(c++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -622,16 +622,16 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(c-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -643,16 +643,16 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(r-->0 && c++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -664,16 +664,16 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(r-->0 && c-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor&& tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -685,17 +685,17 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(r++<7 && c++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -707,7 +707,7 @@ int check_mate::validateQueen(Tile *temp)
     c=temp->col;
     while(r++<7 && c-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -716,7 +716,7 @@ int check_mate::validateQueen(Tile *temp)
         else if(tile[r][c]->pieceColor==temp->pieceColor)
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;

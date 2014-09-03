@@ -14,6 +14,7 @@ validation::validation()
 int validation::chooser(Tile *temp)
 {
 
+
     //canHitKing();
     switch(temp->pieceName)
     {
@@ -26,8 +27,9 @@ int validation::chooser(Tile *temp)
     case 'H': flag=validateHorse(temp);
               break;
 
-    case 'K': flag=validateKing(temp);
-              break;
+    case 'K':
+                flag=validateKing(temp);
+                break;
 
     case 'Q': flag=validateQueen(temp);
               break;
@@ -693,11 +695,11 @@ int validation::check(Tile *temp)
 void validation::orange()
 {
     int i;
-    bool is = false;
     for(i=0;i<max;i++){
 
         tile[exp[i]/8][exp[i]%8]->setStyleSheet("QLabel {background-color: orange;}");
     }
+
 
 }
 
