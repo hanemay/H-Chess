@@ -13,6 +13,7 @@ int COL;
 bool white_king_in_chess;
 bool black_king_in_chess;
 extern Tile *tile[8][8];
+int jj;
 check_mate::check_mate()
 {
 
@@ -48,49 +49,52 @@ bool check_mate::check_if_valid_move(int tileNumber,int tileColour){
 }
 void check_mate::add_to_black(int row, int col, int tiles){
     if(tile[row][col]->pieceColor==1){
-
         colsBlack[row][col][tiles] = tiles;
     }else{
-        std::cout<<"ADDING TO WHITE"<<std::endl;
         colsWhite[row][col][tiles] = tiles;
     }
 
 }
 void check_mate::icolsTest(Tile *temp)
 {
+    std::cout <<"ICOLS TEST "<<std::endl;
     for(int faketiles = 0; faketiles < 64; faketiles++){
-        colsWhite[temp->row][temp->col][faketiles] = NULL;
-        colsBlack[temp->row][temp->col][faketiles] = NULL;
+
+        colsWhite[temp->row][temp->col][faketiles] = -1;
+        colsBlack[temp->row][temp->col][faketiles] = -1;
+        if(temp->pieceName=='Q'){
+            std::cout <<colsBlack[temp->row][temp->col][faketiles]<<" ";
+        }
     }
     switch(temp->pieceName)
     {
-        case 'P': flag=validatePawn(temp);
+        case 'P': jj=validatePawn(temp);
                   break;
 
-        case 'R': flag=validateRook(temp);
+        case 'R': jj=validateRook(temp);
                   break;
 
-        case 'H': flag=validateHorse(temp);
+        case 'H': jj=validateHorse(temp);
                   break;
 
-        case 'K': flag=validateKing(temp);
+        case 'K': jj=validateKing(temp);
                   break;
 
-        case 'Q': flag=validateQueen(temp);
+        case 'Q': jj=validateQueen(temp);
                   break;
 
-        case 'B': flag=validateBishop(temp);
+        case 'B': jj=validateBishop(temp);
                   break;
     }
   //  pieces();
 }
 void check_mate::canHitKing(){
 //std::cout<<"CAN HIT KING TEST"<<std::endl;
-    black_king_in_chess = false;
-    white_king_in_chess = false;
+black_king_in_chess = false;
+white_king_in_chess = false;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j<8;j++){
-              //  std::cout<<tile[i][j]->tileNum<<" "<<tile[i][j]->pieceName<<" ";
+            //std::cout<<tile[i][j]->tileNum<<" ";
             if(tile[i][j]->piece==1){
                 if(tile[i][j]->pieceName=='K'){
                     if(tile[i][j]->pieceColor!=1){
@@ -101,10 +105,16 @@ void check_mate::canHitKing(){
                    // std::cout<<"WHITE KING CAN BE HIT AT "<<tile[i][j]->tileNum<<std::endl;
                     }
                 }
+
                 icolsTest(tile[i][j]);
                 ROW = tile[i][j]->row;
                 COL = tile[i][j]->col;
-               // icols[64] = { NULL };
+            }else{
+                for(int faketiles=0; faketiles < 64; faketiles++){
+                            std::cout<<"empty tile deleted"<<std::endl;
+                            colsWhite[i][j][faketiles] = -1;
+                            colsBlack[i][j][faketiles] = -1;
+                }
             }
 
         }
@@ -119,8 +129,12 @@ int check_mate::checkIfChess2(){
         for(int j = 0; j <8; j++){
             for(int k = 0; k < 64; k++){
                // std::cout<<colsWhite[i][j][k]<<" ";
+                if(tile[i][j]->pieceName=='Q'){
 
-                if(colsBlack[i][j][k]!=0){
+                    std::cout<<colsBlack[i][j][k]<<" ";
+                }
+
+                if(colsBlack[i][j][k]!=-1){
                     if(blackKingTile == k){
                         if(tile[i][j]->piece!=0){
                             std::cout<<"CHESSSSSSSS NY ALGO SORT KONGE "<< tile[i][j]->pieceName<<tile[i][j]->tileNum<<std::endl;
@@ -128,7 +142,7 @@ int check_mate::checkIfChess2(){
                         }
                     }
                }
-               if(colsWhite[i][j][k]!=0){
+               if(colsWhite[i][j][k]!=-1){
                     if(whiteKingTile == k){
                         if(tile[i][j]->piece!=0){
                             white_king_in_chess = true;
@@ -545,7 +559,7 @@ int check_mate::validateKing(Tile *temp)
         }
     }
 
-    return retVal;
+    return -1;
 }
 
 
@@ -553,7 +567,7 @@ int check_mate::validateKing(Tile *temp)
 int check_mate::validateQueen(Tile *temp)
 {
     int r,c;
-    retVal=0;
+
     r=temp->row;
     c=temp->col;
     while(r-->0)
@@ -561,7 +575,6 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
@@ -570,7 +583,6 @@ int check_mate::validateQueen(Tile *temp)
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
             break;
         }
     }
@@ -582,17 +594,15 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
+
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor==temp->pieceColor )
             break;
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            exp[max++]=tile[r][c]->tileNum;
-            retVal=1;
             break;
         }
     }
@@ -604,16 +614,14 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor==temp->pieceColor)
             break;
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
             break;
         }
     }
@@ -628,7 +636,7 @@ int check_mate::validateQueen(Tile *temp)
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor==temp->pieceColor )
             break;
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
@@ -649,7 +657,7 @@ int check_mate::validateQueen(Tile *temp)
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor==temp->pieceColor )
             break;
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
@@ -670,13 +678,13 @@ int check_mate::validateQueen(Tile *temp)
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor==temp->pieceColor )
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor&& tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
+
             break;
         }
     }
@@ -688,11 +696,10 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
-            exp[max++]=tile[r][c]->tileNum;
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
+        else if(tile[r][c]->pieceColor==temp->pieceColor)
             break;
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
@@ -725,7 +732,7 @@ int check_mate::validateQueen(Tile *temp)
     }
 
 
-    return retVal;
+    return -1;
 }
 
 //BISHOP
@@ -818,7 +825,7 @@ int check_mate::validateBishop(Tile *temp)
         }
     }
 
-    return retVal;
+    return -1;
 }
 
 

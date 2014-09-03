@@ -13,9 +13,7 @@ validation::validation()
 
 int validation::chooser(Tile *temp)
 {
-
-
-    //canHitKing();
+    mate->canHitKing();
     switch(temp->pieceName)
     {
     case 'P': flag=validatePawn(temp);
