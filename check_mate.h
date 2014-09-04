@@ -32,7 +32,7 @@ public:
     void pieces();
     void icolsTest(Tile *temp);
 private:
-    void add_to_black(int row, int col, int tile);
+    void add_possible_fields(int row, int col, int tile);
     void add_to_white(int row, int col, int tile);
 
 };

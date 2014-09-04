@@ -6,8 +6,6 @@ int blackKingTile = 60;
 int colsWhite[8][8][64];
 int colsBlack[8][8][64];
 int cols[8][8][64];
-// row col tile
-int wcols[64];
 int ROW;
 int COL;
 bool white_king_in_chess;
@@ -47,7 +45,7 @@ bool check_mate::check_if_valid_move(int tileNumber,int tileColour){
     return true;
 
 }
-void check_mate::add_to_black(int row, int col, int tiles){
+void check_mate::add_possible_fields(int row, int col, int tiles){
     if(tile[row][col]->pieceColor==1){
         colsBlack[row][col][tiles] = tiles;
     }else{
@@ -130,10 +128,8 @@ int check_mate::checkIfChess2(){
             for(int k = 0; k < 64; k++){
                // std::cout<<colsWhite[i][j][k]<<" ";
                 if(tile[i][j]->pieceName=='Q'){
-
                     std::cout<<colsBlack[i][j][k]<<" ";
                 }
-
                 if(colsBlack[i][j][k]!=-1){
                     if(blackKingTile == k){
                         if(tile[i][j]->piece!=0){
@@ -156,13 +152,11 @@ int check_mate::checkIfChess2(){
     std::cout<<"WHITE IS " <<white_king_in_chess<<std::endl;
     std::cout<<"BLACk IS " <<black_king_in_chess<<std::endl;
     return 22;
-
 }
 //PAWN
 int check_mate::validatePawn(Tile *temp)
 {
     int row,col;
-
     row=temp->row;
     col=temp->col;
     retVal=0;
@@ -176,7 +170,7 @@ int check_mate::validatePawn(Tile *temp)
         if(row-1>=0 && !tile[row-1][col]->piece)
         {
             //if(tile[row][col]->pieceColor!='1'){
-                add_to_black(row,col,tile[row-1][col]->tileNum);
+                add_possible_fields(row,col,tile[row-1][col]->tileNum);
            /* }else{
                 add_to_white(row,col,tile[row-1][col]->tileNum);
             }*/
@@ -190,7 +184,7 @@ int check_mate::validatePawn(Tile *temp)
         {
             //if(tile[row][col]->pieceColor!='1'){
              //   std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row-2][col]->tileNum);
+                add_possible_fields(row,col,tile[row-2][col]->tileNum);
            /* }else{
                 add_to_white(row,col,tile[row-2][col]->tileNum);
             }*/
@@ -207,7 +201,7 @@ int check_mate::validatePawn(Tile *temp)
             {
             //if(tile[row][col]->pieceColor!='1'){
                  //std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row-1][col-1]->tileNum);
+                add_possible_fields(row,col,tile[row-1][col-1]->tileNum);
            /* }else{
                 add_to_white(row,col,tile[row-1][col-1]->tileNum);
             }*/
@@ -225,7 +219,7 @@ int check_mate::validatePawn(Tile *temp)
             {
             //if(tile[row][col]->pieceColor!='1'){
                  //std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row-1][col+1]->tileNum);
+                add_possible_fields(row,col,tile[row-1][col+1]->tileNum);
             /**}else{
                 add_to_white(row,col,tile[row-1][col+1]->tileNum);
             }*/
@@ -242,7 +236,7 @@ int check_mate::validatePawn(Tile *temp)
         {
             //if(tile[row][col]->pieceColor!='1'){
                  //std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row+1][col]->tileNum);
+                add_possible_fields(row,col,tile[row+1][col]->tileNum);
             /*}else{
                 add_to_white(row,col,tile[row+1][col]->tileNum);
             }*/
@@ -256,7 +250,7 @@ int check_mate::validatePawn(Tile *temp)
         {
            // if(tile[row][col]->pieceColor!='1'){
                  //std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row+2][col]->tileNum);
+                add_possible_fields(row,col,tile[row+2][col]->tileNum);
             /**}else{
                 add_to_white(row,col,tile[row+2][col]->tileNum);
             }*/
@@ -272,7 +266,7 @@ int check_mate::validatePawn(Tile *temp)
             {
             //if(tile[row][col]->pieceColor!='1'){
                  //std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row+1][col-1]->tileNum);
+                add_possible_fields(row,col,tile[row+1][col-1]->tileNum);
            /** }else{
                 add_to_white(row,col,tile[row+1][col-1]->tileNum);
             }*/
@@ -289,7 +283,7 @@ int check_mate::validatePawn(Tile *temp)
             {
            // if(tile[row][col]->pieceColor!='1'){
                  //std::cout<<"add to black"<<std::endl;
-                add_to_black(row,col,tile[row+1][col+1]->tileNum);
+                add_possible_fields(row,col,tile[row+1][col+1]->tileNum);
            /** }else{
                 add_to_white(row,col,tile[row+1][col+1]->tileNum);
             }*/
@@ -314,7 +308,7 @@ int check_mate::validateRook(Tile *temp){
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -323,7 +317,7 @@ int check_mate::validateRook(Tile *temp){
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -334,7 +328,7 @@ int check_mate::validateRook(Tile *temp){
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -343,7 +337,7 @@ int check_mate::validateRook(Tile *temp){
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -355,7 +349,7 @@ int check_mate::validateRook(Tile *temp){
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -364,7 +358,7 @@ int check_mate::validateRook(Tile *temp){
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -376,7 +370,7 @@ int check_mate::validateRook(Tile *temp){
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -385,7 +379,7 @@ int check_mate::validateRook(Tile *temp){
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -407,7 +401,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r-2][c-1]->pieceColor!=temp->pieceColor || !tile[r-2][c-1]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r-2][c-1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-2][c-1]->tileNum);
             retVal=1;
         }
     }
@@ -416,7 +410,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r-2][c+1]->pieceColor!=temp->pieceColor || !tile[r-2][c+1]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r-2][c+1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-2][c+1]->tileNum);
             retVal=1;
         }
     }
@@ -425,7 +419,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r-1][c-2]->pieceColor!=temp->pieceColor || !tile[r-1][c-2]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r-1][c-2]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-1][c-2]->tileNum);
             retVal=1;
         }
     }
@@ -434,7 +428,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r-1][c+2]->pieceColor!=temp->pieceColor || !tile[r-1][c+2]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r-1][c+2]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-1][c+2]->tileNum);
             retVal=1;
         }
     }
@@ -443,7 +437,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r+2][c+1]->pieceColor!=temp->pieceColor || !tile[r+2][c+1]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r+2][c+1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+2][c+1]->tileNum);
             retVal=1;
         }
     }
@@ -452,7 +446,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r+2][c-1]->pieceColor!=temp->pieceColor || !tile[r+2][c-1]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r+2][c-1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+2][c-1]->tileNum);
             retVal=1;
         }
     }
@@ -461,7 +455,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r+1][c-2]->pieceColor!=temp->pieceColor || !tile[r+1][c-2]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r+1][c-2]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+1][c-2]->tileNum);
             retVal=1;
         }
     }
@@ -470,7 +464,7 @@ int check_mate::validateHorse(Tile *temp){
     {
         if(tile[r+1][c+2]->pieceColor!=temp->pieceColor || !tile[r+1][c+2]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r+1][c+2]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+1][c+2]->tileNum);
             retVal=1;
         }
     }
@@ -491,7 +485,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r-1][c]->piece || tile[r-1][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r-1][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-1][c]->tileNum);
             retVal=1;
         }
     }
@@ -500,7 +494,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r+1][c]->piece || tile[r+1][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r+1][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+1][c]->tileNum);
             retVal=1;
         }
     }
@@ -509,7 +503,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r][c-1]->piece || tile[r][c-1]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c-1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c-1]->tileNum);
             retVal=1;
         }
     }
@@ -518,7 +512,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r][c+1]->piece || tile[r][c+1]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c+1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c+1]->tileNum);
             retVal=1;
         }
     }
@@ -527,7 +521,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r-1][c-1]->piece || tile[r-1][c-1]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r-1][c-1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-1][c-1]->tileNum);
             retVal=1;
         }
     }
@@ -536,7 +530,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r-1][c+1]->piece || tile[r-1][c+1]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r-1][c+1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r-1][c+1]->tileNum);
             retVal=1;
         }
     }
@@ -545,7 +539,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r+1][c-1]->piece || tile[r+1][c-1]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r+1][c-1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+1][c-1]->tileNum);
             retVal=1;
         }
     }
@@ -554,7 +548,7 @@ int check_mate::validateKing(Tile *temp)
     {
         if(!tile[r+1][c+1]->piece || tile[r+1][c+1]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r+1][c+1]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r+1][c+1]->tileNum);
             retVal=1;
         }
     }
@@ -574,7 +568,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
@@ -582,7 +576,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             break;
         }
     }
@@ -593,7 +587,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
 
         }
 
@@ -602,7 +596,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             break;
         }
     }
@@ -613,7 +607,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -621,7 +615,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             break;
         }
     }
@@ -632,7 +626,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -641,7 +635,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -653,7 +647,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -662,7 +656,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -674,7 +668,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -683,7 +677,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
 
             break;
         }
@@ -695,7 +689,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -704,7 +698,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -716,7 +710,7 @@ int check_mate::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -725,7 +719,7 @@ int check_mate::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -747,7 +741,7 @@ int check_mate::validateBishop(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -756,7 +750,7 @@ int check_mate::validateBishop(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -768,7 +762,7 @@ int check_mate::validateBishop(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -777,7 +771,7 @@ int check_mate::validateBishop(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -789,7 +783,7 @@ int check_mate::validateBishop(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -798,7 +792,7 @@ int check_mate::validateBishop(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
@@ -810,7 +804,7 @@ int check_mate::validateBishop(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
@@ -819,7 +813,7 @@ int check_mate::validateBishop(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            add_to_black(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
             break;
         }
