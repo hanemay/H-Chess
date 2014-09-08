@@ -8,8 +8,8 @@ int colsBlack[8][8][64];
 int cols[8][8][64];
 int ROW;
 int COL;
-bool white_king_in_chess;
-bool black_king_in_chess;
+bool white_king_in_chess = false;
+bool black_king_in_chess = false;
 extern Tile *tile[8][8];
 int jj;
 check_mate::check_mate()
@@ -42,8 +42,30 @@ bool check_mate::check_if_valid_move(int tileNumber,int tileColour){
             }
         }
     }
-    return true;
 
+    return true;
+}
+bool check_mate::check_if_valid_move_not_king(int tileNumber,int tileColour){
+    if(black_king_in_chess==true){
+        std::cout<<"BLACK QUEEN VALID MOVES"<<std::endl;
+       // if(white_king_status()){
+            for(int i = 0; i<8; i++){
+                for(int j = 0; j < 8; j++){
+                    if(tileColour!=1){
+                        if(colsBlack[i][j][tileNumber]==tileNumber){
+                            return false;
+                        }
+                    }else{
+                        if(colsWhite[i][j][tileNumber]==tileNumber){
+                            return false;
+                        }
+                    }
+                }
+            }
+           return true;
+        //}
+    }
+    return false;
 }
 void check_mate::add_possible_fields(int row, int col, int tiles){
     if(tile[row][col]->pieceColor==1){
@@ -55,13 +77,13 @@ void check_mate::add_possible_fields(int row, int col, int tiles){
 }
 void check_mate::icolsTest(Tile *temp)
 {
-    std::cout <<"ICOLS TEST "<<std::endl;
+
     for(int faketiles = 0; faketiles < 64; faketiles++){
 
         colsWhite[temp->row][temp->col][faketiles] = -1;
         colsBlack[temp->row][temp->col][faketiles] = -1;
         if(temp->pieceName=='Q'){
-            std::cout <<colsBlack[temp->row][temp->col][faketiles]<<" ";
+           // std::cout <<colsBlack[temp->row][temp->col][faketiles]<<" ";
         }
     }
     switch(temp->pieceName)
@@ -103,13 +125,11 @@ white_king_in_chess = false;
                    // std::cout<<"WHITE KING CAN BE HIT AT "<<tile[i][j]->tileNum<<std::endl;
                     }
                 }
-
                 icolsTest(tile[i][j]);
                 ROW = tile[i][j]->row;
                 COL = tile[i][j]->col;
             }else{
                 for(int faketiles=0; faketiles < 64; faketiles++){
-                            std::cout<<"empty tile deleted"<<std::endl;
                             colsWhite[i][j][faketiles] = -1;
                             colsBlack[i][j][faketiles] = -1;
                 }

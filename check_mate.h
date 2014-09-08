@@ -13,6 +13,7 @@ public:
     check_mate();
     bool black_king_status();
     bool white_king_status();
+    bool check_if_valid_move_not_king(int tileNumber,int tileColour);
     bool check_if_valid_move(int tileNumber, int tileColour);
     int colsWhite[8][8][64];
     int colsBlack[8][8][64];

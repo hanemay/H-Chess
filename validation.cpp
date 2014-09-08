@@ -417,15 +417,20 @@ int validation::validateQueen(Tile *temp)
     int r,c;
 
     retVal=0;
-
+    mate->canHitKing();
+    mate->checkIfChess2();
     r=temp->row;
     c=temp->col;
     while(r-->0)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }else{
+
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -433,9 +438,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -445,8 +452,10 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -454,9 +463,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -466,8 +477,10 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -475,9 +488,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -487,8 +502,10 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -496,9 +513,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -508,8 +527,10 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -517,9 +538,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -529,8 +552,10 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -538,9 +563,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -550,8 +577,10 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -559,9 +588,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -571,8 +602,12 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
+
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
+            }
+
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor)
@@ -580,9 +615,11 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
+            if(mate->check_if_valid_move_not_king(tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
+            }
         }
     }
 
@@ -680,7 +717,6 @@ int validation::validateBishop(Tile *temp)
             break;
         }
     }
-
     return retVal;
 }
 
