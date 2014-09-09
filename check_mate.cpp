@@ -3,6 +3,10 @@
 #include <iostream>
 int whiteKingTile = 4;
 int blackKingTile = 60;
+int whiteKingRow = 4;
+int blackKingRow = 60;
+int whiteKingCol = 4;
+int blackKingCol = 60;
 int colsWhite[8][8][64];
 int colsBlack[8][8][64];
 int cols[8][8][64];
@@ -12,6 +16,7 @@ bool white_king_in_chess = false;
 bool black_king_in_chess = false;
 extern Tile *tile[8][8];
 int jj;
+int cancelled_chess[16];
 check_mate::check_mate()
 {
 
@@ -42,28 +47,30 @@ bool check_mate::check_if_valid_move(int tileNumber,int tileColour){
             }
         }
     }
-
     return true;
 }
-bool check_mate::check_if_valid_move_not_king(int tileNumber,int tileColour){
+bool check_mate::check_if_valid_move_not_king(int row, int col,int tileNumber,int tileColour){
     if(black_king_in_chess==true){
-        std::cout<<"BLACK QUEEN VALID MOVES"<<std::endl;
-       // if(white_king_status()){
-            for(int i = 0; i<8; i++){
-                for(int j = 0; j < 8; j++){
-                    if(tileColour!=1){
-                        if(colsBlack[i][j][tileNumber]==tileNumber){
-                            return false;
-                        }
-                    }else{
-                        if(colsWhite[i][j][tileNumber]==tileNumber){
-                            return false;
-                        }
-                    }
+        for(int j = 0; j < 64; j++){
+            std::cout<<colsBlack[blackKingRow][blackKingCol][j] << " ";
+            if(tileColour!=1){
+                if(colsBlack[blackKingCol][blackKingRow][j]==tileNumber){
+                    std::cout<<" TILE NUMBER: "<<tileNumber<<std::endl;
+                    return false;
                 }
             }
-           return true;
+        }
+        return true;
+    }
+    if(white_king_in_chess==true){
+      //  for(int j = 0; j < 64; j++){
+            if(tileColour==1){
+                if(colsWhite[whiteKingCol][whiteKingRow][tileNumber]==tileNumber){
+                    return false;
+                }
+            }
         //}
+        return true;
     }
     return false;
 }
@@ -119,8 +126,12 @@ white_king_in_chess = false;
                 if(tile[i][j]->pieceName=='K'){
                     if(tile[i][j]->pieceColor!=1){
                         blackKingTile =tile[i][j]->tileNum;
+                        blackKingRow = tile[i][j]->row;
+                        blackKingCol = tile[i][j]->col;
                     //std::cout<<"BLACK KING CAN BE HIT AT "<<tile[i][j]->tileNum<<std::endl;
                     }else{
+                        whiteKingRow = tile[i][j]->row;
+                        whiteKingCol = tile[i][j]->col;
                         whiteKingTile=tile[i][j]->tileNum;
                    // std::cout<<"WHITE KING CAN BE HIT AT "<<tile[i][j]->tileNum<<std::endl;
                     }
@@ -147,9 +158,9 @@ int check_mate::checkIfChess2(){
         for(int j = 0; j <8; j++){
             for(int k = 0; k < 64; k++){
                // std::cout<<colsWhite[i][j][k]<<" ";
-                if(tile[i][j]->pieceName=='Q'){
+              /*  if(tile[i][j]->pieceName=='Q'){
                     std::cout<<colsBlack[i][j][k]<<" ";
-                }
+                }*/
                 if(colsBlack[i][j][k]!=-1){
                     if(blackKingTile == k){
                         if(tile[i][j]->piece!=0){

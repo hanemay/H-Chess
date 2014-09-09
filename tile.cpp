@@ -14,12 +14,8 @@ void disOrange();
 
 void Tile::mousePressEvent(QMouseEvent *event)
 {
-
-
     mate->canHitKing();
     validate(this,++count);
-
-
 }
 
 
