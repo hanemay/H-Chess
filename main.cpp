@@ -1,7 +1,9 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include "tile.h"
-
+#include <QPushButton>
+#include <QMainWindow>
+#include <QVBoxLayout>
 int count=0,turn=1,exp[60],max=0;
 int wR,wC,bR,bC;
 Tile *click1;
@@ -27,17 +29,24 @@ public:
 };
 
 void accessories(QWidget *baseWidget)
-{
+{   //player 2 og player 2 timer
     QLabel *player2 = new QLabel(baseWidget);
     QLabel *name2 = new QLabel("Player 2", baseWidget);
     QLabel *time2 = new QLabel("00:00:00", baseWidget);
-
+    //player 1 og player 1 timer
     QLabel *player1 = new QLabel(baseWidget);
     QLabel *name1 = new QLabel("Player 1", baseWidget);
     QLabel *time1 = new QLabel("00:00:00", baseWidget);
-
     QLabel *moves = new QLabel(baseWidget);
-
+    QPushButton *btnStart = new QPushButton(baseWidget);
+    btnStart->setText(("Start Game"));
+    btnStart->setGeometry(25,25,100,20);
+    QPushButton *btnResign = new QPushButton(baseWidget);
+    btnResign->setText(("Resign Game"));
+    btnResign->setGeometry(25,50,100,20);
+    QPushButton *btnQuit = new QPushButton(baseWidget);
+    btnQuit->setText(("Quit Game"));
+    btnQuit->setGeometry(25,75,100,20);
     name1->setGeometry(125,610,80,20);
     time1->setGeometry(120,635,80,20);
     player1->setGeometry(100,500,100,100);
@@ -148,10 +157,8 @@ int main(int argc, char *argv[])
 
     QWidget *myWidget = new QWidget();
     myWidget->setGeometry(0,0,1370,700);
-
     accessories(myWidget);
     chessBoard(myWidget,tile);
-
     myWidget->show();
     return a.exec();
 }

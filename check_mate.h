@@ -35,6 +35,10 @@ public:
 private:
     void add_possible_fields(int row, int col, int tile);
     void add_to_white(int row, int col, int tile);
+    int chessRowsWhite[16];
+int chessColsWhite[16];
+int chessRowsBlack[16];
+int chessColsBlack[16];
 
 };
 

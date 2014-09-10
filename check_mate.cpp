@@ -2,6 +2,7 @@
 #include "validation.h"
 #include <iostream>
 int whiteKingTile = 4;
+bool PE =false;
 int blackKingTile = 60;
 int whiteKingRow = 4;
 int blackKingRow = 60;
@@ -12,6 +13,12 @@ int colsBlack[8][8][64];
 int cols[8][8][64];
 int ROW;
 int COL;
+int whiteMax = 0;
+int blackMax = 0;
+int chessRowsWhite[16];
+int chessColsWhite[16];
+int chessRowsBlack[16];
+int chessColsBlack[16];
 bool white_king_in_chess = false;
 bool black_king_in_chess = false;
 extern Tile *tile[8][8];
@@ -34,6 +41,7 @@ bool check_mate::white_king_status(){
     return white_king_in_chess;
 }
 bool check_mate::check_if_valid_move(int tileNumber,int tileColour){
+    canHitKing();
     for(int i = 0; i<8; i++){
         for(int j = 0; j < 8; j++){
             if(tileColour!=1){
@@ -50,19 +58,16 @@ bool check_mate::check_if_valid_move(int tileNumber,int tileColour){
     return true;
 }
 bool check_mate::check_if_valid_move_not_king(int row, int col,int tileNumber,int tileColour){
-    if(black_king_in_chess==true){
-        for(int j = 0; j < 64; j++){
-            std::cout<<colsBlack[blackKingRow][blackKingCol][j] << " ";
-            if(tileColour!=1){
-                if(colsBlack[blackKingCol][blackKingRow][j]==tileNumber){
-                    std::cout<<" TILE NUMBER: "<<tileNumber<<std::endl;
+   if(black_king_in_chess==true&&tileColour!=1){
+            if(tileColour==0){
+                if(colsBlack[blackKingCol][blackKingRow][tileNumber]==tileNumber){
+                    std::cout<<" TILE colour: "<<tileColour <<" "<<colsBlack[blackKingCol][blackKingRow][tileNumber]<<std::endl;
                     return false;
                 }
             }
-        }
         return true;
     }
-    if(white_king_in_chess==true){
+    if(white_king_in_chess==true&&tileColour==1){
       //  for(int j = 0; j < 64; j++){
             if(tileColour==1){
                 if(colsWhite[whiteKingCol][whiteKingRow][tileNumber]==tileNumber){
@@ -75,23 +80,23 @@ bool check_mate::check_if_valid_move_not_king(int row, int col,int tileNumber,in
     return false;
 }
 void check_mate::add_possible_fields(int row, int col, int tiles){
+
     if(tile[row][col]->pieceColor==1){
-        colsBlack[row][col][tiles] = tiles;
+        if((tile[row][col]->pieceName!='P'&&tile[row][col]->pieceName!='H')||PE==true){
+            colsBlack[row][col][tiles] = tiles;
+        }
     }else{
-        colsWhite[row][col][tiles] = tiles;
+        if((tile[row][col]->pieceName!='P'&&tile[row][col]->pieceName!='H')||PE==true){
+            colsWhite[row][col][tiles] = tiles;
+        }
     }
 
 }
 void check_mate::icolsTest(Tile *temp)
 {
-
     for(int faketiles = 0; faketiles < 64; faketiles++){
-
         colsWhite[temp->row][temp->col][faketiles] = -1;
         colsBlack[temp->row][temp->col][faketiles] = -1;
-        if(temp->pieceName=='Q'){
-           // std::cout <<colsBlack[temp->row][temp->col][faketiles]<<" ";
-        }
     }
     switch(temp->pieceName)
     {
@@ -116,12 +121,12 @@ void check_mate::icolsTest(Tile *temp)
   //  pieces();
 }
 void check_mate::canHitKing(){
-//std::cout<<"CAN HIT KING TEST"<<std::endl;
 black_king_in_chess = false;
 white_king_in_chess = false;
+whiteMax = 0;
+blackMax = 0;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j<8;j++){
-            //std::cout<<tile[i][j]->tileNum<<" ";
             if(tile[i][j]->piece==1){
                 if(tile[i][j]->pieceName=='K'){
                     if(tile[i][j]->pieceColor!=1){
@@ -147,9 +152,7 @@ white_king_in_chess = false;
             }
 
         }
-            //std::cout<<std::endl;
     }
-    //std::cout<<"CAN HIT KING TEST ENDED"<<std::endl;
 }
 
 int check_mate::checkIfChess2(){
@@ -157,14 +160,16 @@ int check_mate::checkIfChess2(){
     for(int i = 0; i<8; i++){
         for(int j = 0; j <8; j++){
             for(int k = 0; k < 64; k++){
-               // std::cout<<colsWhite[i][j][k]<<" ";
-              /*  if(tile[i][j]->pieceName=='Q'){
+              // std::cout<<colsWhite[i][j][k]<<" ";
+               /* if(tile[i][j]->pieceName=='K'){
                     std::cout<<colsBlack[i][j][k]<<" ";
                 }*/
                 if(colsBlack[i][j][k]!=-1){
                     if(blackKingTile == k){
                         if(tile[i][j]->piece!=0){
                             std::cout<<"CHESSSSSSSS NY ALGO SORT KONGE "<< tile[i][j]->pieceName<<tile[i][j]->tileNum<<std::endl;
+                            chessColsWhite[whiteMax++] = tile[i][j]->col;
+                            chessColsWhite[whiteMax] = tile[i][j]->col;
                             black_king_in_chess = true;
                         }
                     }
@@ -191,72 +196,41 @@ int check_mate::validatePawn(Tile *temp)
     row=temp->row;
     col=temp->col;
     retVal=0;
-    /**std::cout<<tile[row][col]->pieceColor<< " PIECE COLOR"<<std::endl;
-    std::cout<<tile[row][col]->pieceColor<< " PIECE COLOR"<<std::endl;
-    std::cout<<tile[row][col]->pieceColor<< " PIECE COLOR"<<std::endl;
-    std::cout<<tile[row][col]->pieceColor<< " PIECE COLOR"<<std::endl;*/
     //White Pawn
     if(temp->pieceColor)
     {
         if(row-1>=0 && !tile[row-1][col]->piece)
         {
-            //if(tile[row][col]->pieceColor!='1'){
-                add_possible_fields(row,col,tile[row-1][col]->tileNum);
-           /* }else{
-                add_to_white(row,col,tile[row-1][col]->tileNum);
-            }*/
-            //checkIfChess(tile[row-1][col]->tileNum);
-           // cols[ROW][COL][tile[row-1][col]->tileNum]=tile[row-1][col]->tileNum;
-            //std::cout<<cols[ROW][COL][tile[row-1][col]->tileNum]<<" ";
+            add_possible_fields(row,col,tile[row-1][col]->tileNum);
             retVal=1;
         }
 
         if(row==6 && !tile[5][col]->piece && !tile[4][col]->piece)
         {
-            //if(tile[row][col]->pieceColor!='1'){
-             //   std::cout<<"add to black"<<std::endl;
-                add_possible_fields(row,col,tile[row-2][col]->tileNum);
-           /* }else{
-                add_to_white(row,col,tile[row-2][col]->tileNum);
-            }*/
-           /* checkIfChess(tile[row-2][col]->tileNum);
-            cols[ROW][COL][tile[row-2][col]->tileNum]=tile[row-2][col]->tileNum;
-            std::cout<<cols[ROW][COL][tile[row-2][col]->tileNum]<<" ";*/
+            add_possible_fields(row,col,tile[row-2][col]->tileNum);
             retVal=1;
         }
 
         if(row-1>=0 && col-1>=0)
         {
 
-            if(tile[row-1][col-1]->pieceColor!=temp->pieceColor && tile[row-1][col-1]->piece)
+            if(PE==false)
             {
-            //if(tile[row][col]->pieceColor!='1'){
-                 //std::cout<<"add to black"<<std::endl;
+                PE = true;
                 add_possible_fields(row,col,tile[row-1][col-1]->tileNum);
-           /* }else{
-                add_to_white(row,col,tile[row-1][col-1]->tileNum);
-            }*/
-            /*checkIfChess(tile[row-1][col-1]->tileNum);
-            cols[ROW][COL][tile[row-1][col-1]->tileNum]=tile[row-1][col-1]->tileNum;
-            std::cout<<tile[row-1][col-1]->tileNum<<" ";*/
-            retVal=1;
+                PE = false;
+                retVal=1;
             }
         }
 
         if(row-1>=0 && col+1<=7)
         {
 
-            if(tile[row-1][col+1]->pieceColor!=temp->pieceColor && tile[row-1][col+1]->piece)
+            if(PE==false)
             {
-            //if(tile[row][col]->pieceColor!='1'){
-                 //std::cout<<"add to black"<<std::endl;
+                PE = true;
                 add_possible_fields(row,col,tile[row-1][col+1]->tileNum);
-            /**}else{
-                add_to_white(row,col,tile[row-1][col+1]->tileNum);
-            }*/
-               /** checkIfChess(tile[row-1][col+1]->tileNum);
-                cols[ROW][COL][tile[row-1][col+1]->tileNum]=tile[row-1][col+1]->tileNum;
-                std::cout<<tile[row-1][col+1]->tileNum<<" ";*/
+                PE = false;
                 retVal=1;
             }
         }
@@ -265,62 +239,34 @@ int check_mate::validatePawn(Tile *temp)
     {
         if(row+1<=7 && !tile[row+1][col]->piece)
         {
-            //if(tile[row][col]->pieceColor!='1'){
-                 //std::cout<<"add to black"<<std::endl;
-                add_possible_fields(row,col,tile[row+1][col]->tileNum);
-            /*}else{
-                add_to_white(row,col,tile[row+1][col]->tileNum);
-            }*/
-           /* checkIfChess(tile[row+1][col]->tileNum);
-            cols[ROW][COL][tile[row+1][col]->tileNum]=tile[row+1][col]->tileNum;
-            std::cout<<tile[row+1][col]->tileNum<<" ";*/
+            add_possible_fields(row,col,tile[row+1][col]->tileNum);
             retVal=1;
         }
 
         if(row==1 && !tile[2][col]->piece && !tile[3][col]->piece)
         {
-           // if(tile[row][col]->pieceColor!='1'){
-                 //std::cout<<"add to black"<<std::endl;
-                add_possible_fields(row,col,tile[row+2][col]->tileNum);
-            /**}else{
-                add_to_white(row,col,tile[row+2][col]->tileNum);
-            }*/
-           /** checkIfChess(tile[row+2][col]->tileNum);
-            cols[ROW][COL][tile[row+2][col]->tileNum]=tile[row+2][col]->tileNum;
-            std::cout<<tile[row+2][col]->tileNum<<" ";*/
+            add_possible_fields(row,col,tile[row+2][col]->tileNum);
             retVal=1;
         }
 
         if(row+1<=7 && col-1>=0)
         {
-            if(tile[row+1][col-1]->pieceColor!=temp->pieceColor && tile[row+1][col-1]->piece)
+            if(PE==false)
             {
-            //if(tile[row][col]->pieceColor!='1'){
-                 //std::cout<<"add to black"<<std::endl;
+                PE = true;
                 add_possible_fields(row,col,tile[row+1][col-1]->tileNum);
-           /** }else{
-                add_to_white(row,col,tile[row+1][col-1]->tileNum);
-            }*/
-                /**checkIfChess(tile[row+1][col-1]->tileNum);
-                cols[ROW][COL][tile[row+1][col-1]->tileNum]=tile[row+1][col-1]->tileNum;
-                std::cout<<tile[row+1][col-1]->tileNum<<" ";*/
+                PE = false;
                 retVal=1;
             }
         }
 
         if(row+1<=7 && col+1<=7)
         {
-            if(tile[row+1][col+1]->pieceColor!=temp->pieceColor && tile[row+1][col+1]->piece)
+            if(PE==false)
             {
-           // if(tile[row][col]->pieceColor!='1'){
-                 //std::cout<<"add to black"<<std::endl;
+                PE = true;
                 add_possible_fields(row,col,tile[row+1][col+1]->tileNum);
-           /** }else{
-                add_to_white(row,col,tile[row+1][col+1]->tileNum);
-            }*/
-               /** checkIfChess(tile[row+1][col+1]->tileNum);
-                cols[ROW][COL][tile[row+1][col+1]->tileNum]=tile[row+1][col+1]->tileNum;
-                std::cout<<tile[row+1][col+1]->tileNum<<" ";*/
+                PE = false;
                 retVal=1;
             }
         }
@@ -337,16 +283,16 @@ int check_mate::validateRook(Tile *temp){
     c=temp->col;
     while(r-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -357,18 +303,18 @@ int check_mate::validateRook(Tile *temp){
     c=temp->col;
     while(r++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
-            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
+            add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum || tile[r][c]->pieceName =='K');
             retVal=1;
             break;
         }
@@ -378,16 +324,16 @@ int check_mate::validateRook(Tile *temp){
     c=temp->col;
     while(c++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -399,16 +345,16 @@ int check_mate::validateRook(Tile *temp){
     c=temp->col;
     while(c-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -658,7 +604,6 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor )
@@ -667,7 +612,6 @@ int check_mate::validateQueen(Tile *temp)
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
             break;
         }
     }
@@ -679,7 +623,6 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor )
@@ -688,7 +631,6 @@ int check_mate::validateQueen(Tile *temp)
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
             break;
         }
     }
@@ -700,7 +642,6 @@ int check_mate::validateQueen(Tile *temp)
         if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
-            retVal=1;
         }
 
         else if(tile[r][c]->pieceColor==temp->pieceColor )
@@ -709,7 +650,6 @@ int check_mate::validateQueen(Tile *temp)
         else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
-
             break;
         }
     }
@@ -770,16 +710,16 @@ int check_mate::validateBishop(Tile *temp)
     c=temp->col;
     while(r-->0 && c++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -791,16 +731,16 @@ int check_mate::validateBishop(Tile *temp)
     c=temp->col;
     while(r-->0 && c-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -812,16 +752,16 @@ int check_mate::validateBishop(Tile *temp)
     c=temp->col;
     while(r++<7 && c++<7)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
@@ -833,16 +773,16 @@ int check_mate::validateBishop(Tile *temp)
     c=temp->col;
     while(r++<7 && c-->0)
     {
-        if(!tile[r][c]->piece)
+        if(!tile[r][c]->piece || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;
         }
 
-        else if(tile[r][c]->pieceColor==temp->pieceColor)
+        else if(tile[r][c]->pieceColor==temp->pieceColor || tile[r][c]->pieceName =='K')
             break;
 
-        else if(tile[r][c]->pieceColor!=temp->pieceColor)
+        else if(tile[r][c]->pieceColor!=temp->pieceColor || tile[r][c]->pieceName =='K')
         {
             add_possible_fields(temp->row,temp->col,tile[r][c]->tileNum);
             retVal=1;

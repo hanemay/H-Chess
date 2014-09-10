@@ -413,18 +413,19 @@ int validation::validateKing(Tile *temp)
 //QUEEN
 int validation::validateQueen(Tile *temp)
 {
-    int r,c;
+    int r,c,colour;
 
     retVal=0;
     mate->canHitKing();
     mate->checkIfChess2();
+    colour=temp->pieceColor;
     r=temp->row;
     c=temp->col;
     while(r-->0)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }else{
@@ -437,7 +438,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -451,7 +452,7 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -462,7 +463,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -476,7 +477,7 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -487,7 +488,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -501,7 +502,7 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -512,7 +513,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -526,7 +527,7 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -537,7 +538,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -551,7 +552,7 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -562,7 +563,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -576,7 +577,7 @@ int validation::validateQueen(Tile *temp)
     {
         if(!tile[r][c]->piece)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -587,7 +588,7 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
@@ -602,7 +603,7 @@ int validation::validateQueen(Tile *temp)
         if(!tile[r][c]->piece)
         {
 
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             }
@@ -614,16 +615,14 @@ int validation::validateQueen(Tile *temp)
 
         else if(tile[r][c]->pieceColor!=temp->pieceColor)
         {
-            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,tile[r][c]->pieceColor)!=true){
+            if(mate->check_if_valid_move_not_king(temp->row,temp->col,tile[r][c]->tileNum,colour)==false){
             exp[max++]=tile[r][c]->tileNum;
             retVal=1;
             break;
             }
         }
     }
-    for(int i = 0; i < max; i++){
-        std::cout<<exp[i]<<std::endl;
-    }
+
 
 
     return retVal;
