@@ -1,6 +1,7 @@
 #include "tile.h"
 #include "validation.h"
 #include "check_mate.h"
+#include <iostream>
 validation *valid = new validation();
 
 check_mate *mate = new check_mate();
@@ -15,6 +16,7 @@ void disOrange();
 void Tile::mousePressEvent(QMouseEvent *event)
 {
     mate->canHitKing();
+    mate->checkIfChess2();
     validate(this,++count);
 }
 
@@ -63,6 +65,7 @@ void Tile::display(char elem)
     }
     else
         this->clear();
+
 }
 
 void validate(Tile *temp, int c)
@@ -74,7 +77,7 @@ void validate(Tile *temp, int c)
     {
         if(temp->piece && (temp->pieceColor==turn))
         {
-            //exp[max++]=temp->tileNum;
+            //expCheck[max++]=temp->tileNum;
             retValue=valid->chooser(temp);
 
             if(retValue)
@@ -109,7 +112,7 @@ void validate(Tile *temp, int c)
 
         for(i=0;i<max;i++)
         {
-            if(temp->tileNum==exp[i])
+            if(temp->tileNum==expCheck[i])
             {
                 click1->piece=0;
                 temp->piece=1;
@@ -134,6 +137,7 @@ void validate(Tile *temp, int c)
                 disOrange();
                 mate->canHitKing();
                 mate->checkIfChess2();
+
                 max=0;
 
                 turn=(turn+1)%2;
@@ -165,8 +169,8 @@ void disOrange()
     int i;
 
     for(i=0;i<max;i++){
-        tile[exp[i]/8][exp[i]%8]->tileDisplay();
-        }
+        tile[expCheck[i]/8][expCheck[i]%8]->tileDisplay();
+    }
 
 
 

@@ -1,10 +1,11 @@
 #include <QtGui/QApplication>
+#include <UnitTest++.h>
 #include "mainwindow.h"
 #include "tile.h"
 #include <QPushButton>
 #include <QMainWindow>
 #include <QVBoxLayout>
-int count=0,turn=1,exp[60],max=0;
+int count=0,turn=1,expCheck[60],max=0;
 int wR,wC,bR,bC;
 Tile *click1;
 
@@ -31,12 +32,12 @@ public:
 void accessories(QWidget *baseWidget)
 {   //player 2 og player 2 timer
     QLabel *player2 = new QLabel(baseWidget);
-    QLabel *name2 = new QLabel("Player 2", baseWidget);
-    QLabel *time2 = new QLabel("00:00:00", baseWidget);
+    QLabel *name2 = new QLabel("Niclas", baseWidget);
+    QLabel *time2 = new QLabel("10:00:00", baseWidget);
     //player 1 og player 1 timer
     QLabel *player1 = new QLabel(baseWidget);
-    QLabel *name1 = new QLabel("Player 1", baseWidget);
-    QLabel *time1 = new QLabel("00:00:00", baseWidget);
+    QLabel *name1 = new QLabel("Jarl", baseWidget);
+    QLabel *time1 = new QLabel("10:00:00", baseWidget);
     QLabel *moves = new QLabel(baseWidget);
     QPushButton *btnStart = new QPushButton(baseWidget);
     btnStart->setText(("Start Game"));
@@ -64,6 +65,7 @@ void accessories(QWidget *baseWidget)
 
 void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
 {
+
     int i,j,k=0,hor,ver;
     Border *border[4]={ NULL };
 
@@ -149,17 +151,23 @@ void chessBoard(QWidget *baseWidget, Tile *tile[8][8])
     bR=0;
     bC=4;
 
+
 }
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
 
     QWidget *myWidget = new QWidget();
     myWidget->setGeometry(0,0,1370,700);
     accessories(myWidget);
     chessBoard(myWidget,tile);
+
+
     myWidget->show();
+    UnitTest::RunAllTests();
     return a.exec();
+
 }
 

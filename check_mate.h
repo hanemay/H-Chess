@@ -11,6 +11,7 @@ class check_mate
 
 public:
     check_mate();
+    bool check_If_Game_Over();
     bool black_king_status();
     bool white_king_status();
     bool check_if_valid_move_not_king(int row, int col,int tileNumber,int tileColour);
@@ -33,6 +34,7 @@ public:
     void pieces();
     void icolsTest(Tile *temp);
 private:
+    void add_possible_fields_King(int row, int col, int tiles[]);
     void add_possible_fields(int row, int col, int tile);
     void add_to_white(int row, int col, int tile);
     int chessRowsWhite[16];

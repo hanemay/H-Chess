@@ -3,7 +3,7 @@
 #include "tile.h"
 
 extern Tile *tile[8][8];
-extern int exp[60],max,wR,wC;
+extern int expCheck[60],max,wR,wC;
 
 class validation
 {
