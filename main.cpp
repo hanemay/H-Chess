@@ -1,5 +1,4 @@
 #include <QtGui/QApplication>
-#include <UnitTest++.h>
 #include "mainwindow.h"
 #include "tile.h"
 #include <QPushButton>
@@ -166,7 +165,7 @@ int main(int argc, char *argv[])
 
 
     myWidget->show();
-    UnitTest::RunAllTests();
+
     return a.exec();
 
 }
